@@ -1,0 +1,70 @@
+:root {
+  --glass: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --accent: #60a5fa;
+  --error: #f87171;
+  --font-main: 'Outfit', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #0f172a; /* Fallback */
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: background 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.app-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+}
+
+/* Weather-based backgrounds */
+.bg-clear { background-image: linear-gradient(to bottom right, #1d4ed8, #60a5fa); }
+.bg-clouds { background-image: linear-gradient(to bottom right, #475569, #94a3b8); }
+.bg-rain { background-image: linear-gradient(to bottom right, #1e293b, #475569); }
+.bg-snow { background-image: linear-gradient(to bottom right, #e2e8f0, #cbd5e1); }
+.bg-thunderstorm { background-image: linear-gradient(to bottom right, #020617, #1e293b); }
+.bg-mist { background-image: linear-gradient(to bottom right, #64748b, #cbd5e1); }
+.bg-default { background-image: linear-gradient(to bottom right, #0f172a, #334155); }
+
+main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+}
