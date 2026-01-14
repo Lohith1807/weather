@@ -1,82 +1,142 @@
 import React from 'react';
-import { Wind, Droplets, Thermometer, Sunrise, Sunset, Eye, Gauge } from 'lucide-react';
+import {
+    Wind,
+    Droplets,
+    Thermometer,
+    Sunrise,
+    Sunset,
+    Eye,
+    Gauge,
+    Cloud,
+    Navigation,
+    ArrowDownCircle,
+    ArrowUpCircle,
+    MapPin,
+    Clock
+} from 'lucide-react';
 import '../styles/WeatherCard.css';
 
 const WeatherCard = ({ data }) => {
     if (!data) return null;
 
-    const { name, main, weather, wind, sys, visibility } = data;
+    const { name, main, weather, wind, sys, visibility, clouds, coord, dt } = data;
     const iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@4x.png`;
 
     const formatTime = (timestamp) => {
         return new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
+    const formatShortDate = (timestamp) => {
+        return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
     return (
-        <div className="weather-card">
-            <div className="card-header">
-                <h2 className="city-name">{name}, {sys.country}</h2>
-                <p className="date-string">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
-            </div>
-
-            <div className="weather-info">
-                <div className="icon-wrapper">
-                    <img src={iconUrl} alt={weather[0].description} className="weather-icon-large" />
-                </div>
-                <div className="temp-wrapper">
-                    <h1 className="temp-large">{Math.round(main.temp)}°</h1>
-                    <p className="description">{weather[0].description}</p>
-                </div>
-            </div>
-
-            <div className="details-grid">
-                <div className="detail-item">
-                    <Thermometer size={18} className="accent-color" />
-                    <span className="detail-label">Feels Like</span>
-                    <span className="detail-value">{Math.round(main.feels_like)}°</span>
-                </div>
-
-                <div className="detail-item">
-                    <Droplets size={18} className="accent-color" />
-                    <span className="detail-label">Humidity</span>
-                    <span className="detail-value">{main.humidity}%</span>
-                </div>
-
-                <div className="detail-item">
-                    <Wind size={18} className="accent-color" />
-                    <span className="detail-label">Wind</span>
-                    <span className="detail-value">{wind.speed} <span className="unit">m/s</span></span>
-                </div>
-
-                <div className="detail-item">
-                    <Gauge size={18} className="accent-color" />
-                    <span className="detail-label">Pressure</span>
-                    <span className="detail-value">{main.pressure} <span className="unit">hPa</span></span>
-                </div>
-
-                <div className="detail-item">
-                    <Eye size={18} className="accent-color" />
-                    <span className="detail-label">Visibility</span>
-                    <span className="detail-value">{(visibility / 1000).toFixed(1)} <span className="unit">km</span></span>
-                </div>
-
-                <div className="detail-item">
-                    <Sunrise size={18} className="accent-color" />
-                    <span className="detail-label">Sunrise</span>
-                    <span className="detail-value">{formatTime(sys.sunrise)}</span>
-                </div>
-            </div>
-
-            <div className="footer-stats">
-                <div className="sun-path">
-                    <div className="sun-event">
-                        <Sunrise size={14} />
-                        <span>{formatTime(sys.sunrise)}</span>
+        <div className="weather-dashboard">
+            {/* Left Column: Hero Unit */}
+            <div className="hero-column">
+                <div className="header-compact">
+                    <div className="location-row">
+                        <MapPin size={24} className="accent-color" />
+                        <h2 className="city-title">{name}, {sys.country}</h2>
                     </div>
-                    <div className="sun-line"></div>
-                    <div className="sun-event">
-                        <Sunset size={14} />
-                        <span>{formatTime(sys.sunset)}</span>
+                    <p className="dt-tag"><Clock size={14} /> {formatShortDate(dt)} | {formatTime(dt)}</p>
+                </div>
+
+                <div className="hero-main">
+                    <img src={iconUrl} alt={weather[0].description} className="hero-icon" />
+                    <h1 className="hero-temp">{Math.round(main.temp)}°</h1>
+                    <p className="hero-desc">{weather[0].description}</p>
+                </div>
+
+                <div className="hero-footer">
+                    <div className="hero-stat">
+                        <ArrowUpCircle size={20} color="#f87171" />
+                        <span>High: {Math.round(main.temp_max)}°</span>
+                    </div>
+                    <div className="hero-stat">
+                        <ArrowDownCircle size={20} color="#60a5fa" />
+                        <span>Low: {Math.round(main.temp_min)}°</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Column: Details & Stats */}
+            <div className="details-columns">
+                <div className="stats-grid-compact">
+                    <div className="s-item">
+                        <Thermometer size={20} />
+                        <label>Feels Like</label>
+                        <value>{Math.round(main.feels_like)}°</value>
+                    </div>
+                    <div className="s-item">
+                        <Droplets size={20} />
+                        <label>Humidity</label>
+                        <value>{main.humidity}%</value>
+                    </div>
+                    <div className="s-item">
+                        <Wind size={20} />
+                        <label>Wind Speed</label>
+                        <value>{wind.speed} m/s</value>
+                    </div>
+                    <div className="s-item">
+                        <Navigation size={20} style={{ transform: `rotate(${wind.deg}deg)` }} />
+                        <label>Direction</label>
+                        <value>{wind.deg}°</value>
+                    </div>
+                    <div className="s-item">
+                        <Gauge size={20} />
+                        <label>Pressure</label>
+                        <value>{main.pressure} hPa</value>
+                    </div>
+                    <div className="s-item">
+                        <Eye size={20} />
+                        <label>Visibility</label>
+                        <value>{(visibility / 1000).toFixed(1)} km</value>
+                    </div>
+                    <div className="s-item">
+                        <Cloud size={20} />
+                        <label>Cloudiness</label>
+                        <value>{clouds.all}%</value>
+                    </div>
+                    {main.sea_level && (
+                        <div className="s-item">
+                            <Navigation size={20} />
+                            <label>Sea Level</label>
+                            <value>{main.sea_level}</value>
+                        </div>
+                    )}
+                    {main.grnd_level && (
+                        <div className="s-item">
+                            <Navigation size={20} />
+                            <label>Ground</label>
+                            <value>{main.grnd_level}</value>
+                        </div>
+                    )}
+                </div>
+
+                <div className="sun-card-compact">
+                    <div className="sun-row">
+                        <div className="sun-point">
+                            <Sunrise size={24} color="#fdba74" />
+                            <div className="sun-text">
+                                <span className="sun-label">Sunrise</span>
+                                <span className="sun-time">{formatTime(sys.sunrise)}</span>
+                            </div>
+                        </div>
+                        <div className="sun-progress">
+                            <div className="sun-line-dot"></div>
+                        </div>
+                        <div className="sun-point">
+                            <Sunset size={24} color="#f472b6" />
+                            <div className="sun-text">
+                                <span className="sun-label">Sunset</span>
+                                <span className="sun-time">{formatTime(sys.sunset)}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

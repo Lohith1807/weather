@@ -1,60 +1,84 @@
 .search-container {
     width: 100%;
-    margin-bottom: 24px;
-    position: relative;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .search-input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .search-input {
     width: 100%;
-    background: var(--glass);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 16px;
-    padding: 16px 20px 16px 50px;
+    padding: 14px 20px 14px 50px;
     color: white;
     font-family: inherit;
     font-size: 1.1rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     outline: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .search-input:focus {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--accent);
-    box-shadow: 0 0 20px rgba(96, 165, 250, 0.2);
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #fff;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+    transform: scale(1.01);
 }
 
 .search-icon {
     position: absolute;
-    left: 18px;
-    color: var(--text-secondary);
+    left: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.3s ease;
+}
+
+.search-input:focus+.search-icon {
+    color: #fff;
 }
 
 .search-btn {
     position: absolute;
     right: 12px;
-    background: var(--accent);
+    background: #ffffff;
     border: none;
     border-radius: 12px;
-    padding: 8px 16px;
-    color: white;
-    font-weight: 600;
+    padding: 10px 24px;
+    color: #3b82f6;
+    font-weight: 800;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .search-btn:hover {
-    background: #3b82f6;
-    transform: scale(1.05);
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .search-btn:active {
-    transform: scale(0.95);
+    transform: translateY(0);
+}
+
+/* Loader styling */
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
 }
